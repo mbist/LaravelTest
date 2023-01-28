@@ -1,0 +1,6 @@
+php artisan import:csv "http://127.0.0.1:8000/customers.csv"
+
+
+
+
+php artisan csv:import "http://127.0.0.1:8000/products.csv" "App\Models\Product" 
