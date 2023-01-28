@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Validator;
@@ -44,30 +45,50 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         
-        try {
+       // try {
             $input = $request->all();
             
             $validator = Validator::make($input, [
-            'customer' => 'required',
-            'payed' => 'required'
+            'customer' => 'required|integer',
+            'payed' => 'required',
+            'products' => 'required'
             ]);
             if($validator->fails()){
                 return $validator->errors();       
             }
+            $customer = Customer::find($input['customer']);
+            if (is_null($customer)) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Customer Doest Not Exist",
+                
+                    ]);    
+            
+            }
             $Order = Order::create($input);
+            
+            if($Order->id){
+                if(count($input['products'])>0){
+                   
+                    foreach($input['products'] as $k=>$val){
+                        $Order_item = OrderItem::create(['order_id'=>$Order->id,'product_id'=>$val['product_id']]);
+                    }
+                }
+            }
             return response()->json([
-            "success" => true,
-            "message" => "Order created successfully.",
-            "data" => $Order
-            ]);
-        }
+                "success" => true,
+                "message" => "Order created successfully.",
+                "data" => $Order
+                ]);
+        /*}
         catch (\Exception $e) {
+            
             return response()->json([
                 "success" => false,
                 "message" => "Ops something went wrong, Please try again",
                 
                 ]);
-        }
+        }*/
     }
 
     /**
@@ -160,6 +181,7 @@ class OrderController extends Controller
     {
         try {
             $order::destroy($id);
+
             return response()->json([
             "success" => true,
             "message" => "order deleted successfully.",
