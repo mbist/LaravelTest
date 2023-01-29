@@ -8,10 +8,14 @@ php artisan csv:import "<base_url>/ customers.csv"  "App\Models\Customer"
 php artisan csv:import "<base_url>/products.csv" "App\Models\Product" 
 
 
+1. Order Retrive Api
 
+Method:GET
+Url: <base_url>/api/orders
 
-GET:  <base_url>/api/orders
-POST: <base_url>/api/orders/
+2. Order Add Api
+Method:POST
+URL: <base_url>/api/orders/
 
 {
     
@@ -25,26 +29,28 @@ POST: <base_url>/api/orders/
 		]
 			     
 }
-PUT <base_url>/api/orders/{id}
+3. Order Update API
+Method : Put
+URL:  <base_url>/api/orders/{id}
 {
     "customer": "1",
     "payed": "1"
     
 }
-POST:<base_url>/api/orders/{id}/add
+4. Order add product API
+Methos:POST
+API:<base_url>/api/orders/{id}/add
 {
     "product_id": 55
 }
-
-POST: <base_url>/api/orders/{id}/pay
+5. Payment API
+Methos:Post
+URL: <base_url>/api/orders/{id}/pay
 {
     "order_id": 23,
     "customer_email": "user@email.com",
     "value": 33.4
 }
-DELETE: <base_url>/api/orders/{id}
-{
-    "order_id": 23,
-    "customer_email": "user@email.com",
-    "value": 33.4
-}
+6. Delete Order API
+Methos: DELETE
+URL: <base_url>/api/orders/{id}
